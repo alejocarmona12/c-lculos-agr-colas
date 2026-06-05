@@ -5,9 +5,9 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import Dashboard from "./pages/Dashboard";
-import CostCalculator from "./pages/CostCalculator";
-import PresentationContent from "./components/PresentationContent";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import CostCalculator from "./pages/Calculator/CostCalculator";
+import PresentationContent from "./pages/Landing/PresentationContent";
 
 // Componente para proteger las rutas privadas del sistema de cálculos
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({

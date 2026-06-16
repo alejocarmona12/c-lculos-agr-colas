@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
-import { login } from "../services/authService";
+import { login } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
 import { AtSymbolIcon, LockClosedIcon } from "@heroicons/react/24/solid";
 
@@ -58,7 +58,7 @@ const Login: React.FC = () => {
 
           <div>
             <label
-              htmlFor="password"
+              htmlFor="contraseña"
               className="block text-gray-700 font-semibold mb-2"
             >
               Contraseña
@@ -66,7 +66,7 @@ const Login: React.FC = () => {
             <div className="relative">
               <LockClosedIcon className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
               <input
-                id="password"
+                id="contraseña"
                 type="password"
                 className="pl-10 pr-4 py-3 w-full rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-400 outline-none transition"
                 placeholder="••••••••"

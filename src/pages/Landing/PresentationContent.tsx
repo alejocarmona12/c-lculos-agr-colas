@@ -1,12 +1,14 @@
 import { useState } from "react";
-import Navbar from "./Navbar";
-import Footer from "./Footer";
-import Modal from "./Modal";
+import Navbar from "../../components/layout/Navbar";
+import Footer from "../../components/layout/Footer";
+import Modal from "../../components/ui/Modal";
+import { useNavigate } from "react-router-dom";
 
 type ModalType = "demo" | "login" | "register" | null;
 
 export default function PresentationContent() {
   const [modalType, setModalType] = useState<ModalType>(null);
+  const navigate = useNavigate();
 
   const openModal = (type: ModalType) => setModalType(type);
   const closeModal = () => setModalType(null);
@@ -28,8 +30,8 @@ export default function PresentationContent() {
               📊 Gestión Agropecuaria Inteligente
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-none">
-              SIMPLIFICA <br />
-              <span className="text-emerald-600">TU CAMPO</span>
+            Controlá costos y rentabilidad agrícola <br />
+              <span className="text-emerald-600">desde una sola plataforma</span>
             </h1>
             <p className="text-lg text-slate-600 max-w-xl mx-auto lg:mx-0 font-medium leading-relaxed">
               La plataforma definitiva para gestionar tus costos, calcular
@@ -56,7 +58,7 @@ export default function PresentationContent() {
             <div className="relative max-w-md w-full lg:max-w-xl">
               <div className="absolute inset-0 bg-emerald-500/10 rounded-2xl blur-3xl -z-10"></div>
               <img
-                src="https://unsplash.com"
+                src="monitoreo.jpg"
                 alt="Monitoreo de cultivos"
                 className="rounded-2xl object-cover w-full h-87.5 sm:h-100 border border-zinc-200 shadow-2xl"
               />
@@ -72,14 +74,14 @@ export default function PresentationContent() {
           <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="flex justify-center lg:order-1 order-2">
               <img
-                src="https://unsplash.com"
-                alt="Tecnología en el campo"
+                src="tecnologia.C.jpg"
+                alt="tecnologia.C.jpg"
                 className="rounded-2xl object-cover w-full h-75 sm:h-95 shadow-lg border border-zinc-100"
               />
             </div>
             <div className="space-y-5 lg:order-2 order-1">
               <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
-                ¿Qué es calculos-agricolas?
+              ¿Qué es calculos-agricolas?
               </h2>
               <p className="text-slate-600 font-medium leading-relaxed text-base">
                 Es un ecosistema digital diseñado específicamente para
@@ -102,41 +104,74 @@ export default function PresentationContent() {
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-2xl border border-zinc-200 shadow-sm space-y-4">
-              <div className="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center text-2xl text-emerald-600 font-bold">
-                📊
+            <div className="relative overflow-hidden rounded-2xl h-80 shadow-lg group">
+              <img
+                src="/costo.png"
+                alt="Control de costos"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+
+              {/* Capa oscura */}
+              <div className="absolute inset-0 bg-black/50"></div>
+
+              {/* Contenido */}
+              <div className="relative z-10 h-full flex flex-col justify-end p-6">
+                <h3 className="text-2xl font-bold text-white mb-2">
+                  Control de Costos Fijos
+                </h3>
+
+                <p className="text-white/90">
+                  Calculá márgenes brutos por cultivo controlando semillas,
+                  fertilizantes y labores.
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-slate-900">
-                Control de Costos Fijos
-              </h3>
-              <p className="text-slate-600 text-sm font-medium">
-                Calculá márgenes brutos por cultivo controlando semillas,
-                fertilizantes y labores.
-              </p>
             </div>
-            <div className="bg-white p-8 rounded-2xl border border-zinc-200 shadow-sm space-y-4">
-              <div className="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center text-2xl text-emerald-600 font-bold">
-                📈
+
+            {/* proyeccion */}
+            <div className="relative overflow-hidden rounded-2xl h-80 shadow-lg group">
+              <img
+                src="proyeccion.webp"
+                alt="Proyeccion.webp"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+
+              {/* Capa oscura */}
+              <div className="absolute inset-0 bg-black/50"></div>
+
+              {/* Contenido */}
+              <div className="relative z-10 h-full flex flex-col justify-end p-6">
+                <h3 className="text-2xl font-bold text-white mb-2">
+                  Proyección de Rendimiento
+                </h3>
+
+                <p className="text-white/90">
+                  Simulá el impacto de variaciones de precios de los mercados
+                  agrícolas en tu rentabilidad final.
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-slate-900">
-                Proyección de Rendimiento
-              </h3>
-              <p className="text-slate-600 text-sm font-medium">
-                Simulá el impacto de variaciones de precios de los mercados
-                agrícolas en tu rentabilidad final.
-              </p>
             </div>
-            <div className="bg-white p-8 rounded-2xl border border-zinc-200 shadow-sm space-y-4">
-              <div className="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center text-2xl text-emerald-600 font-bold">
-                📱
+            <div className="relative overflow-hidden rounded-2xl h-80 shadow-lg group">
+              <img
+                src="datos.jpg"
+                alt="datos.jpg"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+
+              {/* Capa oscura */}
+              <div className="absolute inset-0 bg-black/50"></div>
+
+              {/* Contenido */}
+              <div className="relative z-10 h-full flex flex-col justify-end p-6">
+                <h3 className="text-2xl font-bold text-white mb-2">
+                  Control de Datos
+                </h3>
+
+                <p className="text-white/90">
+                  Centralizá toda la información de tus lotes, cultivos e
+                  insumos en un único panel para tomar decisiones más rápidas y
+                  precisas.
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-slate-900">
-                Datos desde el Lote
-              </h3>
-              <p className="text-slate-600 text-sm font-medium">
-                Accedé a tu panel y cargá novedades directamente desde tu
-                celular o tablet en el terreno.
-              </p>
             </div>
           </div>
         </section>
@@ -146,17 +181,25 @@ export default function PresentationContent() {
       <Footer />
 
       {/* 4. MODAL DINÁMICO MULTIPROPÓSITO */}
-      <Modal
-        isOpen={modalType !== null}
-        onClose={closeModal}
-        title={
-          modalType === "demo"
-            ? "Solicitar DEMO"
-            : modalType === "login"
-              ? "Iniciar Sesión"
-              : "Crear tu Cuenta"
-        }
-      >
+
+       <Modal
+       isOpen={modalType !== null}
+       onClose={closeModal}
+       title={
+         modalType === "demo"
+           ? "Solicitar DEMO"
+           : modalType === "login"
+           ? "Iniciar Sesión"
+           : "Crear Cuenta"
+       }
+       description={
+         modalType === "demo"
+           ? "Dejanos tus datos y te contactaremos."
+           : modalType === "login"
+           ? "Accedé a tu panel de control agrícola."
+           : "Creá tu cuenta gratuita."
+       }
+     >
         {/* FORMULARIO DE DEMO */}
         {modalType === "demo" && (
           <form
@@ -198,14 +241,21 @@ export default function PresentationContent() {
           </form>
         )}
 
-        {/* FORMULARIO DE LOG IN (INICIO DE SESIÓN) */}
+
+        {/* FORMULARIO DE LOGIN INICIO DE SESIÓN */}
         {modalType === "login" && (
           <form
             className="space-y-4"
             onSubmit={(e) => {
               e.preventDefault();
-              alert("Sesión iniciada");
+
+              // Simula una sesión iniciada
+              localStorage.setItem("token", "sesion_simulada_agro");
+
               closeModal();
+
+              // Redirige al dashboard
+              navigate("/dashboard");
             }}
           >
             <div>
@@ -219,6 +269,7 @@ export default function PresentationContent() {
                 required
               />
             </div>
+
             <div>
               <label className="block text-xs font-semibold text-slate-500 mb-1">
                 Contraseña
@@ -230,12 +281,14 @@ export default function PresentationContent() {
                 required
               />
             </div>
+
             <button
               type="submit"
               className="w-full rounded-xl bg-slate-900 py-3 font-bold text-white hover:bg-slate-800 transition-all cursor-pointer"
             >
               Entrar al Sistema
             </button>
+
             <p className="text-center text-xs text-slate-500 mt-2">
               ¿No tenés cuenta?{" "}
               <button
@@ -246,58 +299,6 @@ export default function PresentationContent() {
                 Registrate acá
               </button>
             </p>
-          </form>
-        )}
-
-        {/* FORMULARIO DE SIGN UP (CREAR CUENTA) */}
-        {modalType === "register" && (
-          <form
-            className="space-y-4"
-            onSubmit={(e) => {
-              e.preventDefault();
-              alert("Cuenta creada");
-              closeModal();
-            }}
-          >
-            <div>
-              <label className="block text-xs font-semibold text-slate-500 mb-1">
-                Nombre Completo
-              </label>
-              <input
-                type="text"
-                placeholder="Esteban Quito"
-                className="w-full rounded-xl bg-zinc-50 p-3 text-slate-900 border border-zinc-200 focus:outline-emerald-500 text-sm"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-slate-500 mb-1">
-                Correo Electrónico
-              </label>
-              <input
-                type="email"
-                placeholder="nombre@correo.com"
-                className="w-full rounded-xl bg-zinc-50 p-3 text-slate-900 border border-zinc-200 focus:outline-emerald-500 text-sm"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-slate-500 mb-1">
-                Contraseña
-              </label>
-              <input
-                type="password"
-                placeholder="••••••••"
-                className="w-full rounded-xl bg-zinc-50 p-3 text-slate-900 border border-zinc-200 focus:outline-emerald-500 text-sm"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full rounded-xl bg-emerald-600 py-3 font-bold text-white hover:bg-emerald-500 transition-all cursor-pointer"
-            >
-              Crear Cuenta
-            </button>
           </form>
         )}
       </Modal>

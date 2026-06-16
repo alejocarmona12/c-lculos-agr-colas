@@ -30,8 +30,8 @@ export default function PresentationContent() {
               📊 Gestión Agropecuaria Inteligente
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-none">
-              SIMPLIFICA <br />
-              <span className="text-emerald-600">TU CAMPO</span>
+            Controlá costos y rentabilidad agrícola <br />
+              <span className="text-emerald-600">desde una sola plataforma</span>
             </h1>
             <p className="text-lg text-slate-600 max-w-xl mx-auto lg:mx-0 font-medium leading-relaxed">
               La plataforma definitiva para gestionar tus costos, calcular
@@ -81,7 +81,7 @@ export default function PresentationContent() {
             </div>
             <div className="space-y-5 lg:order-2 order-1">
               <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
-                ¿Qué es calculos-agricolas?
+              ¿Qué es calculos-agricolas?
               </h2>
               <p className="text-slate-600 font-medium leading-relaxed text-base">
                 Es un ecosistema digital diseñado específicamente para
@@ -181,17 +181,25 @@ export default function PresentationContent() {
       <Footer />
 
       {/* 4. MODAL DINÁMICO MULTIPROPÓSITO */}
-      <Modal
-        isOpen={modalType !== null}
-        onClose={closeModal}
-        title={
-          modalType === "demo"
-            ? "Solicitar DEMO"
-            : modalType === "login"
-              ? "Iniciar Sesión"
-              : "Crear tu Cuenta"
-        }
-      >
+
+       <Modal
+       isOpen={modalType !== null}
+       onClose={closeModal}
+       title={
+         modalType === "demo"
+           ? "Solicitar DEMO"
+           : modalType === "login"
+           ? "Iniciar Sesión"
+           : "Crear Cuenta"
+       }
+       description={
+         modalType === "demo"
+           ? "Dejanos tus datos y te contactaremos."
+           : modalType === "login"
+           ? "Accedé a tu panel de control agrícola."
+           : "Creá tu cuenta gratuita."
+       }
+     >
         {/* FORMULARIO DE DEMO */}
         {modalType === "demo" && (
           <form
@@ -233,8 +241,8 @@ export default function PresentationContent() {
           </form>
         )}
 
-        {/* FORMULARIO DE LOG IN (INICIO DE SESIÓN) */}
-        {/* FORMULARIO DE LOG IN (INICIO DE SESIÓN) */}
+
+        {/* FORMULARIO DE LOGIN INICIO DE SESIÓN */}
         {modalType === "login" && (
           <form
             className="space-y-4"

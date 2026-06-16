@@ -30,7 +30,7 @@ function App() {
         {/* RUTAS PRIVADAS DEL SISTEMA AGRÍCOLA */}
         <Route
           path="/dashboard"
-          element={
+          element={ 
             <PrivateRoute>
               <Dashboard />
             </PrivateRoute>

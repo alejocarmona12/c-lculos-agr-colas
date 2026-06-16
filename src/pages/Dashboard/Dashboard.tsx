@@ -1,230 +1,213 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const [search, setSearch] = useState("");
+  const [tab, setTab] = useState("todos");
 
-  // Función para cerrar sesión y volver a la landing
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/");
-  };
-
-  // Datos simulados de los lotes del campo
   const lotes = [
     {
-      id: "Lote A1",
+      id: "Lote Norte A1",
       cultivo: "Soja",
-      superficie: "120 Ha",
-      costoHa: "U$S 320",
-      rindeEstimado: "3.2 Tn/Ha",
+      superficie: 120,
+      costoHa: 320,
+      rinde: 3.2,
       estado: "Excelente",
     },
     {
-      id: "Lote A2",
+      id: "Lote Norte A2",
       cultivo: "Maíz",
-      superficie: "85 Ha",
-      costoHa: "U$S 450",
-      rindeEstimado: "8.5 Tn/Ha",
+      superficie: 85,
+      costoHa: 450,
+      rinde: 8.5,
       estado: "Bueno",
     },
     {
-      id: "Lote B1",
+      id: "Lote Sur B1",
       cultivo: "Girasol",
-      superficie: "200 Ha",
-      costoHa: "U$S 280",
-      rindeEstimado: "2.1 Tn/Ha",
+      superficie: 200,
+      costoHa: 280,
+      rinde: 2.1,
       estado: "Regular",
     },
   ];
 
-  return (
-    <div className="min-h-screen bg-zinc-100 flex text-slate-800 font-sans antialiased">
-      {/* 1. BARRA LATERAL (Sidebar) */}
-      <aside className="w-64 bg-slate-900 text-white flex flex-col p-6 hidden md:flex">
-        <div className="text-xl font-black tracking-tight mb-8">
-          🌱 <span className="text-emerald-400">calculos</span>-agri
-        </div>
+  const filtered = useMemo(() => {
+    return lotes.filter((l) => {
+      const matchSearch = l.id.toLowerCase().includes(search.toLowerCase());
+      const matchTab = tab === "todos" || l.cultivo.toLowerCase() === tab;
+      return matchSearch && matchTab;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search, tab]);
 
-        <nav className="space-y-2 flex-grow">
-          <button className="w-full text-left bg-emerald-600 font-bold text-white p-3 rounded-xl flex items-center gap-3">
-            📊 Panel General
+  const metrics = useMemo(() => {
+    const ha = filtered.reduce((a, b) => a + b.superficie, 0);
+    const inv = filtered.reduce((a, b) => a + b.superficie * b.costoHa, 0);
+    return {
+      ha,
+      inv,
+      avg: ha ? inv / ha : 0,
+    };
+  }, [filtered]);
+
+  function clsx(_arg0: string, _arg1: string): string | undefined {
+    throw new Error("Function not implemented.");
+  }
+
+  return (
+    <div className="min-h-screen flex bg-[#0A0A0A] text-white">
+      {/* SIDEBAR (Stripe style) */}
+      <aside className="w-64 border-r border-white/10 p-6 hidden md:flex flex-col">
+        <h1 className="text-lg font-semibold tracking-tight">
+          Agro<span className="text-emerald-400">Control</span>
+        </h1>
+
+        <nav className="mt-8 space-y-2 text-sm text-white/70">
+          <button className="w-full text-left px-3 py-2 rounded-lg bg-white/10 text-white">
+            Dashboard
           </button>
+
           <button
             onClick={() => navigate("/calculator")}
-            className="w-full text-left text-zinc-400 hover:text-white hover:bg-slate-800 font-semibold p-3 rounded-xl flex items-center gap-3 transition-colors cursor-pointer"
+            className="w-full text-left px-3 py-2 rounded-lg hover:bg-white/10 transition"
           >
-            🧮 Calculadora Costos
+            Calculadora
           </button>
         </nav>
 
-        <button
-          onClick={handleLogout}
-          className="w-full text-left text-rose-400 hover:text-rose-300 font-bold p-3 rounded-xl flex items-center gap-3 transition-colors cursor-pointer border border-rose-900/30 bg-rose-950/20"
-        >
-          🚪 Cerrar Sesión
-        </button>
+        <div className="mt-auto text-xs text-white/40">v1.0 • SaaS Demo</div>
       </aside>
 
-      {/* 2. CONTENIDO PRINCIPAL */}
-      <main className="flex-grow p-6 md:p-10 space-y-8 overflow-y-auto">
-        {/* Cabecera del Dashboard */}
-        <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-zinc-200 pb-5">
+      {/* MAIN */}
+      <main className="flex-1 p-10 space-y-10">
+        {/* HEADER */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex justify-between items-start"
+        >
           <div>
-            <p className="text-emerald-600 font-semibold">
-              Campaña Agrícola 2026/2027
+            <p className="text-xs uppercase tracking-widest text-white/40">
+              Dashboard
             </p>
-
-            <h1 className="text-4xl font-black text-slate-900">
-              Bienvenido, Alejo 👋
-            </h1>
-
-            <p className="text-zinc-500 font-medium">
-              Controlá costos, rendimientos y rentabilidad desde un único panel.
-            </p>
-          </div>
-          <button
-            onClick={() => navigate("/calculator")}
-            className="px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl shadow-lg transition-all cursor-pointer text-sm"
-          >
-            + Nuevo Cálculo de Costo
-          </button>
-        </header>
-
-        {/* 3. TARJETAS DE MÉTRICAS (KPIs) */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-          <div className="bg-white rounded-3xl p-6 border border-zinc-200 shadow-sm">
-            <p className="text-zinc-400 text-sm">Superficie Total</p>
-
-            <h2 className="text-4xl font-black mt-2">405 Ha</h2>
-
-            <span className="text-emerald-600 text-sm font-semibold">
-              +12 Ha este mes
-            </span>
-          </div>
-
-          <div className="bg-white rounded-3xl p-6 border border-zinc-200 shadow-sm">
-            <p className="text-zinc-400 text-sm">Inversión Total</p>
-
-            <h2 className="text-4xl font-black mt-2">U$S 143.250</h2>
-
-            <span className="text-blue-600 text-sm font-semibold">
-              353 U$S/Ha
-            </span>
-          </div>
-
-          <div className="bg-white rounded-3xl p-6 border border-zinc-200 shadow-sm">
-            <p className="text-zinc-400 text-sm">Producción Estimada</p>
-
-            <h2 className="text-4xl font-black mt-2">1.526 Tn</h2>
-
-            <span className="text-emerald-600 text-sm font-semibold">
-              Objetivo cumplido
-            </span>
-          </div>
-
-          <div className="bg-white rounded-3xl p-6 border border-zinc-200 shadow-sm">
-            <p className="text-zinc-400 text-sm">Margen Estimado</p>
-
-            <h2 className="text-4xl font-black mt-2 text-emerald-600">+18%</h2>
-
-            <span className="text-emerald-600 text-sm font-semibold">
-              Rentabilidad positiva
-            </span>
-          </div>
-        </section>
-        <section className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-          <div className="bg-white rounded-3xl p-6 border border-zinc-200 shadow-sm">
-            <h3 className="font-bold text-lg mb-5">Costos por Categoría</h3>
-
-            <div className="space-y-4">
-              <div className="flex justify-between">
-                <span>🌱 Semillas</span>
-                <span className="font-bold">U$S 42.000</span>
-              </div>
-
-              <div className="flex justify-between">
-                <span>🧪 Fertilizantes</span>
-                <span className="font-bold">U$S 55.000</span>
-              </div>
-
-              <div className="flex justify-between">
-                <span>⛽ Combustible</span>
-                <span className="font-bold">U$S 21.500</span>
-              </div>
-
-              <div className="flex justify-between">
-                <span>🚜 Maquinaria</span>
-                <span className="font-bold">U$S 24.750</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-3xl p-6 border border-zinc-200 shadow-sm">
-            <h3 className="font-bold text-lg mb-5">Actividad Reciente</h3>
-
-            <div className="space-y-4 text-sm">
-              <div>✅ Siembra completada en Lote A1</div>
-              <div>🚜 Nuevo costo registrado</div>
-              <div>📈 Proyección actualizada</div>
-              <div>🌦 Alerta climática recibida</div>
-            </div>
-          </div>
-        </section>
-
-        {/* 4. TABLA DE CONTROL DE LOTES */}
-        <section className="bg-white rounded-2xl border border-zinc-200 shadow-sm overflow-hidden">
-          <div className="p-6 border-b border-zinc-200">
-            <h2 className="text-lg font-bold text-slate-900">
-              Monitoreo de Lotes Activos
+            <h2 className="text-3xl font-semibold tracking-tight">
+              Establecimiento Don Pedro
             </h2>
+            <p className="text-sm text-white/50 mt-1">
+              Analítica financiera agrícola en tiempo real
+            </p>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-sm">
-              <thead>
-                <tr className="bg-zinc-50 border-b border-zinc-200 text-zinc-400 font-bold uppercase text-[11px] tracking-wider">
-                  <th className="p-4">Identificación</th>
-                  <th className="p-4">Cultivo</th>
-                  <th className="p-4">Superficie</th>
-                  <th className="p-4">Costo Directo</th>
-                  <th className="p-4">Rinde Esperado</th>
-                  <th className="p-4">Estado de Cultivo</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-100 font-medium text-slate-700">
-                {lotes.map((lote) => (
-                  <tr
-                    key={lote.id}
-                    className="hover:bg-zinc-50/80 transition-colors"
-                  >
-                    <td className="p-4 font-bold text-slate-950">{lote.id}</td>
-                    <td className="p-4">
-                      <span className="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold">
-                        {lote.cultivo}
-                      </span>
-                    </td>
-                    <td className="p-4">{lote.superficie}</td>
-                    <td className="p-4">{lote.costoHa}</td>
-                    <td className="p-4">{lote.rindeEstimado}</td>
-                    <td className="p-4">
-                      <span
-                        className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
-                          lote.estado === "Excelente"
-                            ? "bg-emerald-100 text-emerald-800"
-                            : lote.estado === "Bueno"
-                              ? "bg-blue-100 text-blue-800"
-                              : "bg-amber-100 text-amber-800"
-                        }`}
-                      >
-                        {lote.estado}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => navigate("/calculator")}
+            className="px-5 py-2 rounded-xl bg-emerald-500 text-black font-semibold"
+          >
+            + Nuevo análisis
+          </motion.button>
+        </motion.div>
+
+        {/* KPI CARDS */}
+        <div className="grid md:grid-cols-3 gap-6">
+          {[
+            { label: "Superficie", value: `${metrics.ha} Ha` },
+            {
+              label: "Inversión",
+              value: `U$S ${metrics.inv.toLocaleString()}`,
+            },
+            { label: "Promedio/Ha", value: `U$S ${metrics.avg.toFixed(0)}` },
+          ].map((m, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.08 }}
+              whileHover={{ y: -4 }}
+              className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl"
+            >
+              <p className="text-xs text-white/40 uppercase tracking-widest">
+                {m.label}
+              </p>
+              <p className="text-3xl font-semibold mt-2">{m.value}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* FILTERS */}
+        <div className="flex flex-col md:flex-row justify-between gap-4">
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Buscar lote..."
+            className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          />
+
+          <div className="flex gap-2">
+            {["todos", "soja", "maiz", "girasol"].map((t) => (
+              <button
+                key={t}
+                onClick={() => setTab(t)}
+                className={clsx(
+                  "px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition",
+                  tab === t
+                    ? "bg-emerald-500 text-black"
+                    : "bg-white/5 text-white/60 hover:text-white hover:bg-white/10",
+                )}
+              >
+                {t}
+              </button>
+            ))}
           </div>
-        </section>
+        </div>
+
+        {/* TABLE */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="rounded-2xl border border-white/10 overflow-hidden bg-white/5 backdrop-blur-xl"
+        >
+          <table className="w-full text-sm">
+            <thead className="text-white/40 text-xs uppercase">
+              <tr>
+                <th className="p-4 text-left">Lote</th>
+                <th>Cultivo</th>
+                <th>Ha</th>
+                <th>Costo</th>
+                <th>Rinde</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {filtered.map((l, i) => (
+                <motion.tr
+                  key={i}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  whileHover={{ backgroundColor: "rgba(255,255,255,0.05)" }}
+                  className="border-t border-white/10"
+                >
+                  <td className="p-4">{l.id}</td>
+                  <td>{l.cultivo}</td>
+                  <td>{l.superficie}</td>
+                  <td>U$S {l.costoHa}</td>
+                  <td>{l.rinde}</td>
+                  <td>
+                    <span className="px-2 py-1 text-xs rounded-full bg-emerald-500/20 text-emerald-300">
+                      {l.estado}
+                    </span>
+                  </td>
+                </motion.tr>
+              ))}
+            </tbody>
+          </table>
+        </motion.div>
       </main>
     </div>
   );
